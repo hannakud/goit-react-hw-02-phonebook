@@ -1,6 +1,7 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
 import PropTypes from 'prop-types';
+import css from './ContactForm.module.css';
 
 export const ContactForm = ({ onAddContact }) => {
   let ContactSchema = object({
@@ -21,12 +22,12 @@ export const ContactForm = ({ onAddContact }) => {
       }}
     >
       <Form>
-        <label>
+        <label className={css.label}>
           Name
           <Field name="name" type="text" />
           <ErrorMessage name="name" />
         </label>
-        <label>
+        <label className={css.label}>
           Number
           <Field name="number" type="text" />
           <ErrorMessage name="number" />

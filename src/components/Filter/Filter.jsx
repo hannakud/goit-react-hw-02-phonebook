@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types';
+import css from './Filter.module.css';
 
 export const Filter = ({ value, onChangeFilter }) => {
   return (
     <div>
-      <input value={value} onChange={onChangeFilter}></input>
+      <label className={css.labelFilter}>
+        {' '}
+        Filter by name<input
+          value={value}
+          onChange={onChangeFilter}
+        ></input>{' '}
+      </label>
     </div>
   );
 };

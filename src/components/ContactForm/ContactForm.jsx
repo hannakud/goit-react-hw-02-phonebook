@@ -22,12 +22,12 @@ export const ContactForm = ({ onAddContact }) => {
       }}
     >
       <Form>
-        <label className={css.label}>
+        <label className={css.labelForm}>
           Name
           <Field name="name" type="text" />
           <ErrorMessage name="name" />
         </label>
-        <label className={css.label}>
+        <label className={css.labelForm}>
           Number
           <Field name="number" type="text" />
           <ErrorMessage name="number" />

@@ -1,33 +1,20 @@
 import PropTypes from 'prop-types';
 import css from './ContactList.module.css';
-export const ContactList = ({ list, filter, onDeleteContact }) => {
-  const isContantactsExist = Boolean(list.length);
-  const emptyMessage = filter
-    ? `No contacts macth "${filter}"`
-    : 'Phonebook is empty. Add contacts first';
+export const ContactList = ({ list, onDeleteContact }) => {
   return (
-    <div>
-      {isContantactsExist ? (
-        <ul className={css.contactList}>
-          {list.map(contact => {
-            return (
-              <li className={css.contactItem} key={contact.id}>
-                <span>{contact.name}: </span>
-                <span>{contact.number} </span>
-                <button
-                  className={css.button}
-                  onClick={() => onDeleteContact(contact.id)}
-                >
-                  Delete
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <div>{emptyMessage}</div>
-      )}
-    </div>
+    <ul className={css.contactList}>
+      {list.map(({ id, name, number }) => {
+        return (
+          <li className={css.contactItem} key={id}>
+            <span>{name}: </span>
+            <span>{number} </span>
+            <button className={css.button} onClick={() => onDeleteContact(id)}>
+              Delete
+            </button>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 
@@ -39,6 +26,5 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired,
     })
   ).isRequired,
-  filter: PropTypes.string.isRequired,
   onDeleteContact: PropTypes.func.isRequired,
 };

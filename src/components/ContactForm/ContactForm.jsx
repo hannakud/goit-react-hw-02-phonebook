@@ -17,8 +17,9 @@ export const ContactForm = ({ onAddContact }) => {
     <Formik
       initialValues={{ name: '', number: '' }}
       validationSchema={ContactSchema}
-      onSubmit={async values => {
+      onSubmit={(values, actions) => {
         onAddContact(values);
+        actions.resetForm();
       }}
     >
       <Form>

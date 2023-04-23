@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 import css from './App.module.css';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
@@ -8,12 +7,7 @@ import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
-      { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
-      { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
-      { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
 
@@ -25,34 +19,26 @@ export class App extends Component {
       alert('Contact is already exist');
       return;
     }
-    this.setState(prevState => {
-      const newContact = {
-        id: nanoid(),
-        name: formValue.name,
-        number: formValue.number,
-      };
-      return {
-        contacts: [...prevState.contacts, newContact],
-        filter: prevState.filter,
-      };
-    });
+    const newContact = {
+      id: nanoid(),
+      name: formValue.name,
+      number: formValue.number,
+    };
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, newContact],
+    }));
   };
 
   onDeleteContact = id => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts.filter(el => el.id !== id),
-        filter: prevState.filter,
-      };
-    });
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(el => el.id !== id),
+      filter: '',
+    }));
   };
 
   onChangeFilter = event => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts,
-        filter: event.target.value,
-      };
+    this.setState({
+      filter: event.target.value,
     });
   };
 
@@ -64,6 +50,9 @@ export class App extends Component {
 
   render() {
     const filteredContactsList = this.getFilteredContactsList();
+    const emptyMessage = this.state.filter
+      ? `No contacts macth "${this.state.filter}"`
+      : 'Phonebook is empty. Add contacts first';
 
     return (
       <main className={css.main}>
@@ -74,26 +63,15 @@ export class App extends Component {
           value={this.state.filter}
           onChangeFilter={this.onChangeFilter}
         />
-        <ContactList
-          filter={this.state.filter}
-          list={filteredContactsList}
-          onDeleteContact={this.onDeleteContact}
-        />
+        {filteredContactsList.length ? (
+          <ContactList
+            list={filteredContactsList}
+            onDeleteContact={this.onDeleteContact}
+          />
+        ) : (
+          <div>{emptyMessage}</div>
+        )}
       </main>
     );
   }
 }
-
-App.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  filter: PropTypes.string.isRequired,
-  onAddContact: PropTypes.func.isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
-  onChangeFilter: PropTypes.func.isRequired,
-};
